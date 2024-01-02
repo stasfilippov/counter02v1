@@ -1,0 +1,18 @@
+.App {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    border: 5px cadetblue solid;
+    background-color: azure;
+    padding: 20px;
+    border-radius: 10px;
+
+}

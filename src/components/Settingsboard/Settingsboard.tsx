@@ -1,27 +1,24 @@
-import React from 'react';
-import {Setting} from './Setting/Setting';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
+import {Setting} from './Setting/Setting'
 
 type SettingsboardType = {
 	maxValue: number
 	minValue: number
-	setMaxValue: (value: number) => void
-	setMinValue: (value: number) => void
+	setValue: (value: number, name: 'max' | 'min') => void
 }
 export const Settingsboard: React.FC<SettingsboardType> = ({
-	                                                           setMaxValue,
-	                                                           setMinValue,
-	                                                           maxValue, minValue
+	                                                           setValue,
+	                                                           maxValue,
+	                                                           minValue,
                                                            }) => {
-
-
 	return (
 		<SettingsboardStyles>
-			<Setting title={'max'} callBack={setMaxValue} value={maxValue}/>
-			<Setting title={'min'} callBack={setMinValue} value={minValue}/>
+			<Setting title={'max'} callBack={setValue} value={maxValue}/>
+			<Setting title={'min'} callBack={setValue} value={minValue}/>
 		</SettingsboardStyles>
-	);
-};
+	)
+}
 
 const SettingsboardStyles = styled.div`
     padding: 20px 10px;

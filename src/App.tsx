@@ -1,97 +1,100 @@
-import React, {useEffect, useState} from 'react';
-import './App.css';
-import {Scoreboard} from './components/Scoreboard/Scoreboard';
-import {Button} from './components/Button/Button';
-import {Settingsboard} from './components/Settingsboard/Settingsboard';
+import {useEffect, useState} from 'react'
+import './App.css'
+import {Button} from './components/Button/Button'
+import {Scoreboard} from './components/Scoreboard/Scoreboard'
+import {Settingsboard} from './components/Settingsboard/Settingsboard'
 
 export type NameButtonType = 'add' | 'reset'
 
-
 function App() {
-
-
-	let [maxValue, setMaxValue] = useState<number>(5);
-	let [minValue, setMinValue] = useState<number>(0);
-	let [isDisableSetButton, setIsDisableSetButton] = useState(true)
-	let [isShowText, setIsShowText] = useState(false)
-	let [isDisabeControlBtns, setIsDisabeControlBtns] = useState(false)
-
+	let [maxValue, setMaxValue] = useState<number>(5)
+	let [minValue, setMinValue] = useState<number>(0)
 	let [count, setCount] = useState<number>(0)
 
 	useEffect(() => {
-		let newMaxValue = localStorage.getItem('maxValue')
-		let newMinValue = localStorage.getItem('minValue')
+		let newMaxValue = localStorage.getItem('maxvalue')
+		let newMinValue = localStorage.getItem('minvalue')
 
 		if (newMaxValue && newMinValue) {
 			setMaxValue(JSON.parse(newMaxValue))
 			setMinValue(JSON.parse(newMinValue))
+			setCount(JSON.parse(newMinValue))
 		}
-
-		getMinValueFromLocalStorageHandler()
 	}, [])
 
+
+	let [isDisableSetButton, setIsDisableSetButton] = useState(true)
+	let [isShowText, setIsShowText] = useState(false)
+	let [isDisabeControlBtns, setIsDisabeControlBtns] = useState(false)
+
 	const setToLocalStorageHandler = () => {
-		localStorage.setItem('maxValue', JSON.stringify(maxValue))
-		localStorage.setItem('minValue', JSON.stringify(minValue))
-		getMinValueFromLocalStorageHandler()
+		localStorage.setItem('maxvalue', JSON.stringify(maxValue))
+		localStorage.setItem('minvalue', JSON.stringify(minValue))
+		setCount(minValue)
+		// getMinValueFromLocalStorageHandler()
 		setIsDisableSetButton(true)
 		setIsShowText(false)
 		setIsDisabeControlBtns(false)
 	}
 
-	const getMinValueFromLocalStorageHandler = () => {
-		let newMinValue = localStorage.getItem('minValue')
-		if (newMinValue) {
-			setCount(JSON.parse(newMinValue))
-		}
-	}
-
 	const incrementCount = () => {
 		if (count < maxValue) {
-			setCount(count + 1);
+			setCount(count + 1)
 		}
 	}
 	const resetCount = () => {
 		setCount(minValue)
 	}
 	const isDisabled = (name: NameButtonType, countValue: number): boolean => {
+		if (!isDisabeControlBtns) {
+			return (name === 'add' && countValue >= maxValue) || (name === 'reset' && countValue === minValue)
+		}
 		return isDisabeControlBtns
-			? isDisabeControlBtns
-			: (name === 'add' && countValue >= maxValue) || (name === 'reset' && countValue === minValue);
+	}
+	const setValueHandler = (value: number, name: 'max' | 'min') => {
+		setIsDisabeControlBtns(true)
+		setIsDisableSetButton(false)
+		setIsShowText(true)
+		name === 'max' ? setMaxValue(value) : setMinValue(value)
+	}
 
-	}
-	const setMaxValueHandler = (value: number) => {
-		setIsDisabeControlBtns(true)
-		setIsDisableSetButton(false)
-		setIsShowText(true)
-		setMaxValue(value)
-	}
-	const setMinValueHandler = (value: number) => {
-		setIsDisabeControlBtns(true)
-		setIsDisableSetButton(false)
-		setIsShowText(true)
-		setMinValue(value)
-	}
 
 	return (
 		<div className="App">
 			<div className="wrapper">
-				<Settingsboard maxValue={maxValue} minValue={minValue} setMaxValue={setMaxValueHandler}
-				               setMinValue={setMinValueHandler}/>
-				<Button title={'Set'} callback={setToLocalStorageHandler} disabled={isDisableSetButton}/>
+				<Settingsboard
+					maxValue={maxValue}
+					minValue={minValue}
+					setValue={setValueHandler}
+				/>
+				<Button
+					title={'Set'}
+					callback={setToLocalStorageHandler}
+					disabled={isDisableSetButton}
+				/>
 			</div>
 			<div className="wrapper">
-				<Scoreboard count={count} maxValue={maxValue} minValue={minValue} isShowText={isShowText}/>
+				<Scoreboard
+					count={count}
+					maxValue={maxValue}
+					minValue={minValue}
+					isShowText={isShowText}
+				/>
 				<div className="battons-wrapper">
-					<Button title={'Add'} callback={incrementCount}
-					        disabled={isDisabled('add', count)}/>
-					<Button title={'Reset'}
-					        callback={resetCount}
-					        disabled={isDisabled('reset', count)}/>
+					<Button
+						title={'Add'}
+						callback={incrementCount}
+						disabled={isDisabled('add', count)}
+					/>
+					<Button
+						title={'Reset'}
+						callback={resetCount}
+						disabled={isDisabled('reset', count)}
+					/>
 				</div>
 			</div>
 		</div>
-	);
+	)
 }
 
-export default App;
+export default App

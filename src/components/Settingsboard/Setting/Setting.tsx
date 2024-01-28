@@ -2,14 +2,14 @@ import React, {ChangeEvent} from 'react';
 import styled from 'styled-components';
 
 type SettingType = {
-	title: string
-	callBack: (value: number) => void
+	title: 'max' | 'min'
+	callBack: (value: number, name: 'max' | 'min') => void
 	value: number
 }
 export const Setting: React.FC<SettingType> = ({title, callBack, value}) => {
 
 	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-		callBack(+e.currentTarget.value)
+		callBack(+e.currentTarget.value, title)
 	}
 
 	return (

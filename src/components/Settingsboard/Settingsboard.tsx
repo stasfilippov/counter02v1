@@ -14,8 +14,8 @@ export const Settingsboard: React.FC<SettingsboardType> = ({
                                                            }) => {
 	return (
 		<SettingsboardStyles>
-			<Setting title={'max'} callBack={setValue} value={maxValue}/>
-			<Setting title={'min'} callBack={setValue} value={minValue}/>
+			<Setting title={'max'} callBack={setValue} value={maxValue} compareValue={minValue}/>
+			<Setting title={'min'} callBack={setValue} value={minValue} compareValue={maxValue}/>
 		</SettingsboardStyles>
 	)
 }

@@ -24,7 +24,7 @@ export const Setting: React.FC<SettingType> = ({title, callBack, value, compareV
 				break;
 			}
 			case 'max': {
-				value < 0 || value === compareValue || value < compareValue ? setError(true) : setError(false);
+				value < 0 || value === compareValue ? setError(true) : setError(false);
 				break
 			}
 

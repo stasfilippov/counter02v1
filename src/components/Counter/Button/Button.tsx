@@ -1,23 +1,32 @@
 import React from 'react';
 import {useDispatch} from 'react-redux';
-import {incrValueAC, resetValueAC} from '../counter-reducer';
+import {incrValueAC, resetValueAC, setValueAC} from '../counter-reducer';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks';
-import {getCounterValuse} from '../../../app/app-selectors';
+import {getCounterValue} from '../../../app/app-selectors';
+import {settingsCounterSetValues, SettingsValues} from '../../CounterSettings/settingsboard-reducer';
 
-type NameButtonType = 'add' | 'reset'
+type NameButtonType = 'add' | 'reset' | 'set'
 type ButtonPropsType = {
 	title: NameButtonType
+	currentSettingsValue?: SettingsValues
 }
 
 
 export const Button: React.FC<ButtonPropsType> = ({
 	                                                  title,
+	                                                  currentSettingsValue
                                                   }) => {
-	const countValue = useAppSelector(getCounterValuse)
+	const countValue = useAppSelector(getCounterValue)
+	const settingsValuesFromState = useAppSelector(state => state.settings)
 	const dispatch = useAppDispatch()
 
 	const isDisabled = (name: NameButtonType, countValue: number) => {
-		return name === 'reset' && countValue === 0
+		switch (name) {
+			case 'reset':
+				return countValue === 0
+			case 'add':
+				return countValue === settingsValuesFromState.maxValue
+		}
 	}
 
 	const onClickHandler = () => {
@@ -26,8 +35,12 @@ export const Button: React.FC<ButtonPropsType> = ({
 			return
 		}
 		if (title === 'reset') {
-			dispatch(resetValueAC())
+			dispatch(resetValueAC(settingsValuesFromState.minValue))
 			return;
+		}
+		if (title === 'set' && currentSettingsValue) {
+			dispatch(settingsCounterSetValues(currentSettingsValue))
+			dispatch(setValueAC(currentSettingsValue.minValue))
 		}
 	}
 
@@ -40,6 +53,8 @@ export const Button: React.FC<ButtonPropsType> = ({
 		cursor: 'pointer',
 		fontWeight: 'bold',
 		borderRadius: '10px',
+		fontSize: '20px',
+		fontFamily: 'Montserrat'
 	}
 
 

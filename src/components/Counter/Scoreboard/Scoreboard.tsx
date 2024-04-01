@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import {useSelector} from 'react-redux';
 import {AppStateType} from '../../../app/store';
 import {useAppSelector} from '../../../app/hooks';
-import {getCounterValuse} from '../../../app/app-selectors';
+import {getCounterValue} from '../../../app/app-selectors';
 
 type ScoreboardPropsType = {
 }
 export const Scoreboard: React.FC<ScoreboardPropsType> = () => {
-	const countValue = useAppSelector(getCounterValuse)
+	const countValue = useAppSelector(getCounterValue)
 
 	return (
 		<ScoreboardStyle>

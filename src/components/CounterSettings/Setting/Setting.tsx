@@ -3,47 +3,34 @@ import styled from 'styled-components';
 
 type SettingType = {
 	title: 'max' | 'min'
-	callBack: (value: number, name: 'max' | 'min') => void
 	value: number
-	compareValue: number
+	callback: (number: number ) => void
 }
-export const Setting: React.FC<SettingType> = ({title, callBack, value, compareValue}) => {
+export const Setting: React.FC<SettingType> = ({title, value, callback}) => {
 
-	const [error, setError] = useState(false)
 	const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-		callBack(+e.currentTarget.value, title)
-
-
+		if (title === 'max') {
+			callback(+e.currentTarget.value)
+		}
+		if (title === 'min') {
+			callback(+e.currentTarget.value)
+		}
 	}
 
-	useEffect(() => {
-
-		switch (title) {
-			case 'min': {
-				value < 0 || value > compareValue || value === compareValue ? setError(true) : setError(false);
-				break;
-			}
-			case 'max': {
-				value < 0 || value === compareValue ? setError(true) : setError(false);
-				break
-			}
-
-			default:
-				break;
-		}
-
-	}, [value, compareValue])
-
 	return (
-		<SettingStyles error={error}>
+		<SettingStyles >
 			<div>{title} value:</div>
-			<input type={'number'} onChange={onChangeHandler} value={value}/>
+			<input
+				type={'number'}
+				onChange={onChangeHandler}
+				value={value}
+			/>
 		</SettingStyles>
 	);
 };
 
 type SettingStylesPropsType = {
-	error: boolean
+	error?: boolean
 }
 
 const SettingStyles = styled.div<SettingStylesPropsType>`

@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import './App.css'
-import {Button} from './components/Button/Button'
-import {Scoreboard} from './components/Scoreboard/Scoreboard'
+import {Button} from './components/Counter/Button/Button'
+import {Scoreboard} from './components/Counter/Scoreboard/Scoreboard'
 import {Settingsboard} from './components/Settingsboard/Settingsboard'
 
 export type NameButtonType = 'add' | 'reset'
@@ -61,34 +61,27 @@ function App() {
 
 	return (
 		<div className="App">
+			{/*<div className="wrapper">*/}
+			{/*	<Settingsboard*/}
+			{/*		maxValue={maxValue}*/}
+			{/*		minValue={minValue}*/}
+			{/*		setValue={setValueHandler}*/}
+			{/*	/>*/}
+			{/*	<Button*/}
+			{/*		title={'Set'}*/}
+			{/*		callback={setToLocalStorageHandler}*/}
+			{/*		disabled={isDisableSetButton}*/}
+			{/*	/>*/}
+			{/*</div>*/}
 			<div className="wrapper">
-				<Settingsboard
-					maxValue={maxValue}
-					minValue={minValue}
-					setValue={setValueHandler}
-				/>
-				<Button
-					title={'Set'}
-					callback={setToLocalStorageHandler}
-					disabled={isDisableSetButton}
-				/>
-			</div>
-			<div className="wrapper">
-				<Scoreboard
-					count={count}
-					maxValue={maxValue}
-					minValue={minValue}
-					isShowText={isShowText}
-				/>
+				<Scoreboard/>
 				<div className="battons-wrapper">
 					<Button
 						title={'Add'}
-						callback={incrementCount}
 						disabled={isDisabled('add', count)}
 					/>
 					<Button
 						title={'Reset'}
-						callback={resetCount}
 						disabled={isDisabled('reset', count)}
 					/>
 				</div>

@@ -1,20 +1,20 @@
 import React from 'react';
+import {useDispatch} from 'react-redux';
+import {incrValueAC} from '../counter-reducer';
 
 type ButtonPropsType = {
 	title: string
-	callback: () => void
 	disabled: boolean
 }
 
 export const Button: React.FC<ButtonPropsType> = ({
 	                                                  title,
-	                                                  callback,
 	                                                  disabled
                                                   }) => {
-
+	const dispatch = useDispatch()
 
 	const onClickHandler = () => {
-		callback()
+		dispatch(incrValueAC())
 	}
 
 	const styleButton = {

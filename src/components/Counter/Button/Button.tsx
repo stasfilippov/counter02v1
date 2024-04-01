@@ -1,20 +1,34 @@
 import React from 'react';
 import {useDispatch} from 'react-redux';
-import {incrValueAC} from '../counter-reducer';
+import {incrValueAC, resetValueAC} from '../counter-reducer';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks';
+import {getCounterValuse} from '../../../app/app-selectors';
 
+type NameButtonType = 'add' | 'reset'
 type ButtonPropsType = {
-	title: string
-	disabled: boolean
+	title: NameButtonType
 }
+
 
 export const Button: React.FC<ButtonPropsType> = ({
 	                                                  title,
-	                                                  disabled
                                                   }) => {
-	const dispatch = useDispatch()
+	const countValue = useAppSelector(getCounterValuse)
+	const dispatch = useAppDispatch()
+
+	const isDisabled = (name: NameButtonType, countValue: number) => {
+		return name === 'reset' && countValue === 0
+	}
 
 	const onClickHandler = () => {
-		dispatch(incrValueAC())
+		if (title === 'add') {
+			dispatch(incrValueAC())
+			return
+		}
+		if (title === 'reset') {
+			dispatch(resetValueAC())
+			return;
+		}
 	}
 
 	const styleButton = {
@@ -30,8 +44,11 @@ export const Button: React.FC<ButtonPropsType> = ({
 
 
 	return (
-		<button style={styleButton} onClick={onClickHandler} className={'Button'}
-		        disabled={disabled}>
+		<button
+			style={styleButton}
+			onClick={onClickHandler}
+			disabled={isDisabled(title, countValue)}
+		>
 			{title}
 		</button>
 	);

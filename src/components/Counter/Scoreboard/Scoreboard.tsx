@@ -2,14 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import {useSelector} from 'react-redux';
 import {AppStateType} from '../../../app/store';
+import {useAppSelector} from '../../../app/hooks';
+import {getCounterValuse} from '../../../app/app-selectors';
 
 type ScoreboardPropsType = {
 }
 export const Scoreboard: React.FC<ScoreboardPropsType> = () => {
-	const countValue = useSelector<AppStateType, number>(state => state.counter.value)
+	const countValue = useAppSelector(getCounterValuse)
 
 	return (
-		<ScoreboardStyle >
+		<ScoreboardStyle>
 			<ScoreboardText>{countValue}</ScoreboardText>
 		</ScoreboardStyle>
 	);
